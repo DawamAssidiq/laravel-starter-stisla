@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\UserController;
 use App\Models\Category;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,22 @@ use App\Models\Category;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/config', function () {
+    Artisan::call('storage:link');
+    Artisan::call(
+        'migrate:fresh',
+        [
+            '--force' => true
+        ]
+    );
+    Artisan::call(
+        'db:seed',
+        [
+            '--force' => true
+        ]
+    );
+});
 
 Route::get('/', function () {
     return view('auth/login');
